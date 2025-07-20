@@ -1,0 +1,116 @@
+### Authentication
+# @name login
+POST {{baseUrl}}/api/v1/authentication/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+###
+
+@authToken = {{login.response.body.token}}
+
+### Criar Pedido
+POST {{baseUrl}}/api/v1/orders
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "externalOrderId": "EXT-001",
+  "orderNumber": "ORD-001",
+  "items": [
+    {
+      "productCode": "PROD-001",
+      "productName": "Produto Teste 1",
+      "quantity": 2,
+      "unitPrice": 10.50
+    },
+    {
+      "productCode": "PROD-002",
+      "productName": "Produto Teste 2",
+      "quantity": 1,
+      "unitPrice": 25.00
+    }
+  ]
+}
+
+### Consultar Pedidos
+GET {{baseUrl}}/api/v1/orders?pageNumber=1&pageSize=10
+Authorization: Bearer {{authToken}}
+
+### Consultar Pedido por ID (Seed Data)
+GET {{baseUrl}}/api/v1/orders/{{orderId}}
+Authorization: Bearer {{authToken}}
+
+### Consultar Pedido Pendente (Seed Data)
+GET {{baseUrl}}/api/v1/orders/{{orderPendenteId}}
+Authorization: Bearer {{authToken}}
+
+### Consultar Pedidos por Status
+GET {{baseUrl}}/api/v1/orders/status/Pending?pageNumber=1&pageSize=100
+Authorization: Bearer {{authToken}}
+
+### Consultar Pedidos Calculados
+GET {{baseUrl}}/api/v1/orders/status/Calculated?pageNumber=1&pageSize=100
+Authorization: Bearer {{authToken}}
+
+### Atualizar Status do Pedido
+PUT {{baseUrl}}/api/v1/orders/{{orderId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "status": "Calculated"
+}
+
+### Processar Pedidos em Lote
+POST {{baseUrl}}/api/v1/orders/process
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "targetStatus": "Calculated",
+  "orders": [
+    {
+      "externalOrderId": "EXT-002",
+      "orderNumber": "ORD-002",
+      "items": [
+        {
+          "productCode": "PROD-003",
+          "productName": "Produto Lote 1",
+          "quantity": 3,
+          "unitPrice": 15.00
+        }
+      ]
+    },
+    {
+      "externalOrderId": "EXT-003",
+      "orderNumber": "ORD-003",
+      "items": [
+        {
+          "productCode": "PROD-004",
+          "productName": "Produto Lote 2",
+          "quantity": 1,
+          "unitPrice": 50.00
+        },
+        {
+          "productCode": "PROD-005",
+          "productName": "Produto Lote 3",
+          "quantity": 2,
+          "unitPrice": 12.50
+        }
+      ]
+    }
+  ]
+}
+
+### Excluir Pedido
+DELETE {{baseUrl}}/api/v1/orders/{{orderId}}
+Authorization: Bearer {{authToken}}
+
+### Variáveis de Ambiente
+@baseUrl = https://localhost:7001
+@orderId = c3c3c3c3-c3c3-c3c3-c3c3-c3c3c3c3c3c3
+@orderPendenteId = a7a7a7a7-a7a7-a7a7-a7a7-a7a7a7a7a7a7
