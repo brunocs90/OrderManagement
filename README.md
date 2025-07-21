@@ -30,7 +30,3 @@ O processamento em lote utiliza semáforos (`SemaphoreSlim`) para limitar a conc
 - Cada pedido é validado e processado de forma independente e thread-safe.
 - O processamento calcula valores, atualiza status e timestamps conforme a transição.
 - Erros são coletados e reportados ao final do processamento.
-
----
-
-> Projeto .NET para gestão de pedidos, com API REST, processamento concorrente e regras de negócio robustas.
